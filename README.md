@@ -1,4 +1,4 @@
-# coinapp
+# Crypto Coin App
 
 A flutter App that fetches essential information about a Crypto Coin and also tells its live Price and Price difference Percentage, this App is implemented using an API i.e CoinGecko API which provides with the information of different types of Crypto Currency and also gives live prices.
 
