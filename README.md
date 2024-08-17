@@ -1,16 +1,7 @@
-# coinapp
+# Crypto Coin App
 
-A new Flutter project.
+A flutter App that fetches essential information about a Crypto Coin and also tells its live Price and Price difference Percentage, this App is implemented using an API i.e CoinGecko API which provides with the information of different types of Crypto Currency and also gives live prices.
 
-## Getting Started
-
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## App Screenshots
+![Screenshot 2024-08-12 193220](https://github.com/user-attachments/assets/d6b9014a-a5f9-4e6b-83bd-5bd3e573f5eb)
+![Screenshot 2024-08-12 193547](https://github.com/user-attachments/assets/58f72453-0c87-4a59-b7ac-48e791168b47)
