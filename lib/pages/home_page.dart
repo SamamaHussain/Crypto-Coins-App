@@ -21,12 +21,15 @@ class _homePageState extends State<homePage> {
     double? _deviceHieght, _deviceWidth;
 
     HTTPServices? _http;
+    String? valueChoose;
+    String? assetImage='bitcoin.png';
 
     @override
   void initState() {
     // TODO: implement initState
     super.initState();
     _http = locator.get<HTTPServices>();
+    valueChoose=_coins.first;
   }
   @override
   Widget build(BuildContext context) {
@@ -36,14 +39,17 @@ class _homePageState extends State<homePage> {
           child: SingleChildScrollView(
           
             child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            mainAxisAlignment: MainAxisAlignment.start,
               mainAxisSize: MainAxisSize.max,
             children: [
               selectedCoinDropDown(),
+              SizedBox(height: 25,),
+
             
-              Image.asset("images/bitcoin.png",width: 65,),
+              Image.asset("images/$assetImage",width: 65,),
+              SizedBox(height: 25,),
+              DataContainer(),
             
-              dataContainer(),
                   ],
                   ),
           ),
@@ -53,28 +59,70 @@ class _homePageState extends State<homePage> {
     );
   }
 
-   Widget selectedCoinDropDown (){
-        List<String> _coins=['Bitcoin','PyCoin'];
-    List<DropdownMenuItem<String>> _items = _coins
-        .map(
-          (e) => DropdownMenuItem(
-              value: e,
-              child: Text(
-                e,
-                style: const TextStyle(
-                    fontSize: 34,
-                    color: Colors.white),
-              )),
-        )
-        .toList();
+ String? mainURL='/coins/bitcoin';
+  Map<String, dynamic>? _data;
+  
+  void isChangedFunction(String newValue){
+   if(newValue=='Ethereum'){
+            mainURL="/coins/ethereum";
+            assetImage='ethereum.png';
+          }
+    else if(newValue=='Bitcoin'){
+            mainURL="/coins/bitcoin";
+            assetImage='bitcoin.png';
+          }
+print("Selected Value is: $newValue");
+// DataContainer(mainURL!);
+
+  }
+
+     List<String> _coins=['Bitcoin','Ethereum'];
+       
+  // String? valueItem;
+
+
+
+Widget selectedCoinDropDown (){
+
+    // List<DropdownMenuItem<String>> _items = _coins
+    //     .map(
+    //       (e) => DropdownMenuItem(
+    //           value: e,
+    //           child: Text(
+    //             e,
+    //             style: const TextStyle(
+    //                 fontSize: 34,
+    //                 color: Colors.white),
+    //           )),
+    //     )
+    //     .toList();
+
+    
         
         return DropdownButton(
-      value: _coins.first,
-      items: _items,
-      onChanged: (_value) {},
-      dropdownColor: const Color.fromARGB(255, 107, 107, 107),
+      value: valueChoose,
+      onChanged: (_value) {
+        setState(() {
+          valueChoose = _value;
+          isChangedFunction(_value!);
+          
+        });
+        
+      },
+
+      items:_coins.map((e) {
+        return DropdownMenuItem(
+          value: e,
+          child: Text(e,
+          style: const TextStyle(
+                    fontSize: 34,
+                    color: Colors.white),),
+        );
+      },).toList(),
+      
+      dropdownColor: Color.fromARGB(255, 0, 0, 0),
       icon: const Icon(
-        Icons.arrow_downward_sharp,
+        Icons.arrow_drop_down_sharp,
         color: Colors.white,
       ),
     
@@ -82,17 +130,17 @@ class _homePageState extends State<homePage> {
 
       }
 
-      Widget dataContainer() {
+       Widget DataContainer() {
         return FutureBuilder(
-          future: _http!.get("/coins/bitcoin"),
+          future: _http!.get(mainURL!),
          builder: (BuildContext context, AsyncSnapshot snapshot) {
           if (snapshot.hasData) {
-          Map _data = jsonDecode(
+           _data = jsonDecode(
             snapshot.data.toString(),
           );
-          int _usdPrice = _data["market_data"]["current_price"]["usd"];
-          double _changePercntage = _data["market_data"]["price_change_percentage_24h_in_currency"]["usd"];
-          String _discription =  _data["description"]["en"];
+          var _usdPrice = _data!["market_data"]["current_price"]["usd"];
+          var _changePercntage = _data!["market_data"]["price_change_percentage_24h_in_currency"]["usd"];
+          String _discription =  _data!["description"]["en"];
 
           // return _currentPrice (_usdPrice);
           return Column(
@@ -114,12 +162,12 @@ class _homePageState extends State<homePage> {
         
       }
 
-      Widget _currentPrice (num _rate){
+      Widget _currentPrice (var _rate){
         return Text("\$ " + _rate.toStringAsFixed(2),
         style: TextStyle(fontSize: 40,fontWeight: FontWeight.bold,color: Colors.white,),);
       }
 
-      Widget _changePercentage (double _rate){
+      Widget _changePercentage (var _rate){
         return Text(_rate.toStringAsFixed(5) + " %",
         style: TextStyle(fontSize: 14,color: Color.fromARGB(255, 224, 224, 224),),);
       }
